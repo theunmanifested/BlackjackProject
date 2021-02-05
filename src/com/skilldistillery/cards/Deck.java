@@ -21,6 +21,11 @@ public class Deck {
     return deck;
   }
   
+  public int cardsLeftInDeck() {
+	  // TODO: Test if dealCard is functioning properly
+	  return cards.size();
+  }
+  
   public int checkDeckSize() {
     return cards.size();
   }
