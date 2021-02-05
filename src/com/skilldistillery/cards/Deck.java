@@ -1,8 +1,10 @@
 package com.skilldistillery.cards;
 
-import java.util.ArrayList;
+import java.util.*;
 import java.util.Collections;
 import java.util.List;
+
+import com.skilldistillery.blackjack.Hand;
 
 public class Deck {
   private List<Card> cards;
@@ -21,6 +23,10 @@ public class Deck {
     return deck;
   }
   
+//  public void dealCard(Hand hand) {
+//	  
+//  }
+  
   public int cardsLeftInDeck() {
 	  // TODO: Test if dealCard is functioning properly
 	  return cards.size();
@@ -37,5 +43,12 @@ public class Deck {
   public Card dealCard() {
     return cards.remove(0);
   }
+
+@Override
+public String toString() {
+	return "Deck [cards=" + cards + "]";
+}
+  
+  
   
 }
