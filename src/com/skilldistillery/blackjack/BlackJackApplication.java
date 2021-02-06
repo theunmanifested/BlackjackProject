@@ -60,15 +60,17 @@ public class BlackJackApplication {
 	}
 
 	private void launch() {
-		String captureStr = "";		
+		String captureStr = "";
 		int pChoice = 0; // will force to pick a valid entry
 		// Dealer gets cards ready
 		deck = getCardsReady();
-		// Deal cards - descriptive
+		// Initial Cards to Player and Dealer
+		// Deal and Display Cards (Dealer's first Face Down)
 		dealCardsToPlayer(2);
 		dealFirstCardToDealer();
-		dealCardsToDealer(1); 
-		
+		dealCardsToDealer(1);
+		System.out.println(player.toPlayerHandString());
+		System.out.println(dealer.toDealerHandString());
 		// prompt Player to select an action
 		do {
 			printPlayerMenu();
@@ -82,7 +84,7 @@ public class BlackJackApplication {
 			}
 		} while ((pChoice < 1 || pChoice > 3) && pChoice != 9);
 		// do the action
-		handlePlayerChoice(pChoice);
+		handlePlayersChoice(pChoice);
 	}
 
 	private Deck getCardsReady() {
@@ -101,23 +103,35 @@ public class BlackJackApplication {
 	}
 
 	private void dealCardsToPlayer(int numOfCards) {
+		Card currentCard;
 		// Player gets two cards face up
 		for (int i = 0; i < numOfCards; i++) {
-			player.cardForPlayer(deck.dealCard());
-			System.out.println(player.getBjh().toString());
+			currentCard = deck.dealCard();
+			player.cardForPlayer(currentCard);
+//			System.out.println(player.getBjh().toString());
+			// add points to Player's hand
+			player.setpTotal(currentCard.getValue());
 		}
 	}
 
 	private void dealCardsToDealer(int numOfCards) {
+		Card currentCard;
 		// Dealer gets two cards First faces down, Second faces up
 		for (int i = 0; i < numOfCards; i++) {
-			dealer.cardForDealer(deck.dealCard());
-			System.out.println(dealer.getBjh().toDealerHandString());
+			currentCard = deck.dealCard();
+			dealer.cardForDealer(currentCard);
+//			System.out.println(dealer.getBjh().toDealerHandString());
+			// add points to Dealer's hand
+			dealer.setdTotal(currentCard.getValue());
 		}
 	}
-	
+
 	private void dealFirstCardToDealer() {
-		dealer.cardForDealer(deck.dealCard());
+		Card currentCard;
+		currentCard = deck.dealCard();
+		dealer.cardForDealer(currentCard);
+		// add points to Dealer's hand
+		dealer.setdTotal(currentCard.getValue());
 	}
 
 	private void printPlayerMenu() {
@@ -127,14 +141,30 @@ public class BlackJackApplication {
 		System.out.println("3. Print both Hands\n");
 		System.out.println("9. Quit\n");
 	}
-	
-	private void handlePlayerChoice(int userInput) {
+
+	private void handlePlayersChoice(int userInput) {
 		switch (userInput) {
 		case 1:
-			
-			break;
+			// Hit
+			dealCardsToPlayer(1);
+			// check Player's status
 
+			break;
+		case 2:
+			// Stand
+			System.out.println("Player Stands\n");
+			break;
+		case 3:
+			// Printout both hands
+			System.out.println(player.getBjh().toString());
+//			System.out.println(dealer.getBjh().toDealerHandString());
+			break;
+		case 9:
+			// Quit
+			System.out.println("We thank you for playing our card game today. Have a good one!");
+			System.exit(0);
 		default:
+			System.out.println("Somehow, you still got an invalid entry. Please try again.");
 			break;
 		}
 	}

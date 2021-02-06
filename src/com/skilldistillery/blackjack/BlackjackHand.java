@@ -26,17 +26,19 @@ public class BlackjackHand {
 		return result;		
 	}
 	// Blackjack Hand methods
-	public boolean isBlackjack() {
-		// TODO return temp
+	public boolean isBlackjack(int points) {
 		boolean isBlackjack = false;
-		
+		if (points == 21) {
+			isBlackjack = true;
+		} 		
 		return isBlackjack;		
 	}
 	
-	public boolean isBust() {
-		// TODO return temp
+	public boolean isBust(int points) {
 		boolean isBust = false;
-		
+		if (points >= 22) {
+			isBust = true;
+		}		
 		return isBust;		
 	}
 
@@ -45,14 +47,6 @@ public class BlackjackHand {
 		// TODO test if printout is acceptable
 		return "BlackjackHand [cards=" + cards + "]";
 	}
-	
-	public String toDealerHandString() {
-		List<Card> tempCards = cards;
-		tempCards.remove(0);
-		return "Dealers BlackjackHand [cards=[FaceDown Card], " + tempCards + "]";
-	}
-	
-	
 	
 	
 }
