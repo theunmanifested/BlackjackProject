@@ -24,29 +24,23 @@ public class BlackjackHand {
 	public int getHandValue() {
 		// TODO return temp
 		int result = 0;
+		for (Card card : cards) {
+			result += card.getValue();
+		}
 		return result;
 	}
-
-	// Blackjack Hand methods
-	public boolean isBlackjack(int points) {
-		boolean isBlackjack = false;
-		if (points == 21) {
-			isBlackjack = true;
-		}
-		return isBlackjack;
-	}
-
-	public boolean isBust(int points) {
-		boolean isBust = false;
-		if (points >= 22) {
-			isBust = true;
-		}
-		return isBust;
-	}
-
+	
 	public String toString() {
 		// TODO test if printout is acceptable
 		return "BlackjackHand [cards=" + cards + "]";
+	}
+
+	public boolean isBlackJack() {
+		boolean isBlackJack = false;
+		if (getHandValue() == 21) {
+			isBlackJack = true;
+		}
+		return isBlackJack;
 	}
 
 }

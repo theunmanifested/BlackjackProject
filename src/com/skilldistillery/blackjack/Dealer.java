@@ -22,7 +22,7 @@ public class Dealer {
 		bjh = new BlackjackHand();
 	}
 	
-	public void cardForDealer(Card card) {		
+	public void cardForDealer(Card card) {
 		bjh.addCard(card);		
 	} 
 	
@@ -30,7 +30,14 @@ public class Dealer {
 		deck = new Deck();
 		return deck;
 	}
-
+	
+	public void shuffle() {
+		deck.shuffle();
+	}
+	
+	public Card dealCard() {
+	    return deck.dealCard();
+	  }
 	public Deck getDeck() {
 		return deck;
 	}
@@ -53,8 +60,21 @@ public class Dealer {
 		return "Dealer's BlackjackHand [cards=[FaceDown Card], " + tempCards + "]";
 	}
 	
-
+	public boolean isBust() {
+		boolean isBust = false;
+		if (dTotal >= 22) {
+			isBust = true;
+		}
+		return isBust;
+	}
 	
+	public boolean isBlackJack() {
+		return bjh.isBlackJack();
+	}
+	
+	public int getHandValue() {
+		return bjh.getHandValue();
+	}
 	
 	
 	

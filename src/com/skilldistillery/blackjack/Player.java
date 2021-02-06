@@ -31,16 +31,25 @@ public class Player {
 		this.pTotal += pTotal;
 	}
 
-//	@Override
-//	public String toString() {
-//		return "Player [bjh=" + bjh + "]";
-//	}
 	
 	public String toPlayerHandString() {
 		return "Player's BlackjackHand [cards=" + bjh.cards + "]";
 	}
 	
+	public boolean isBust() {
+		boolean isBust = false;
+		if (pTotal >= 22) {
+			isBust = true;
+		}
+		return isBust;
+	}
 	
+	public boolean isBlackJack() {
+		return bjh.isBlackJack();
+	}
 	
+	public int getHandValue() {
+		return bjh.getHandValue();
+	}	
 	
 }

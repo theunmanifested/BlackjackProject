@@ -50,8 +50,9 @@ public class BlackJackApplication {
 	// Welcome(instantiate) participants
 	private Player player = new Player();
 	private Dealer dealer = new Dealer();
-	private Deck deck = new Deck();
 	private Scanner kb = new Scanner(System.in);
+	private boolean keepGoing = true;
+
 	public static void main(String[] args) {
 
 		BlackJackApplication bja = new BlackJackApplication();
@@ -59,89 +60,70 @@ public class BlackJackApplication {
 	}
 
 	private void launch() {
+		// continue to play until player quits - keepGoing = false
+		do {
 		
-		// Dealer gets cards ready
-		deck = getCardsReady();
+		// Dealer gets cards ready and displays
+		System.out.println("\tHello, I will be your Blackjack Dealer today. Good Luck to you!\n");
+		// Dealer gets a deck and show un-shuffled deck to Player
+		System.out.println("Here's our deck of cards:");
+		dealer.producesDeck();
+		System.out.println(dealer.getDeck().toString());
+		// Dealer shuffles deck in front of Player
+		dealer.shuffle();
+//		System.out.println(dealer.getDeck().toString()); // for verification that deck was shuffled
 		
 		// Initial Cards to Player and Dealer
 		// Deal and Display Cards (Dealer's first Face Down)
 		dealCardsToPlayer(2);
 		dealFirstCardToDealer();
 		dealCardsToDealer(1);
-		System.out.println("Player Total Points: " + player.getpTotal());
+		System.out.println("Player Total Points: " + player.getHandValue());
 		System.out.println(player.toPlayerHandString());
-		System.out.println("Dealer Total Points: " + dealer.getdTotal());
+		System.out.println("Dealer Total Points: " + dealer.getHandValue());
 		System.out.println(dealer.toDealerHandString());
-		
-		// Player's move (!isBust || !isBJ)
-		// if Hit
-			// Hit
-			// Stand
-			// Bust
-			// BJ
-		// if Stand - Dealer's turn
-		// if Display Hands - Loop 
-		// if Quit - Display Goodbye, and exit program
-		
-		// Dealer's move (!isBust || !isBJ)
-		// if Hit
-			// Hit
-			// Stand
-			// Bust
-			// BJ
-			// if Stand - Player's turn 		
-		// TODO TODO TODO TODO
-//		do {
-			// prompt Player to select an action
-			int pChoice = playerChoiceSelection();			
-			// perform the action
-			handlePlayersChoice(pChoice);
-//		} while (!player.getBjh().isBlackjack(player.getpTotal()) || !player.getBjh().isBust(player.getpTotal()));
-		
-	}
+		// check if both get Blackjack at first hand dealt
+			if (player.isBlackJack() && dealer.isBlackJack()) {
+				System.out.println("BLACKJACK: Both Dealer and Player have 21. Tie/Push. Start again!");
+				continue;
+			}
+			
+//			do {
 
-	private Deck getCardsReady() {
-		Deck prepDeck;
-		System.out.println("\tHello, I will be your Blackjack Dealer today. Good Luck to you!\n");
-		// Dealer gets a deck and show un-shuffled deck to Player
-		System.out.println("Here's our deck of cards:");
-		prepDeck = dealer.producesDeck();
-		// TODO fix toString to printout better
-		System.out.println(prepDeck.toString() + "\n");
-		// Dealer shuffles deck in front of Player
-		prepDeck.shuffle();
-//		System.out.println(prepDeck.toString()); // for verification that deck was shuffled
-		return prepDeck;
-	}
+		// prompt Player to select an action
+		int pChoice = playerChoiceSelection();
+		// perform the action
+		handlePlayersChoice(pChoice);
+		// if player's hand is higher than 21, they bust
+
+//			} while (!player.isBust() && !player.isBlackjack);
+		} while (keepGoing);
+		// sysout
+
+	} // end of launch()
+
+//	private boolean playerTakesAction()
 
 	private void dealCardsToPlayer(int numOfCards) {
-		Card currentCard;
 		// Player gets two cards face up
 		for (int i = 0; i < numOfCards; i++) {
-			currentCard = deck.dealCard();
-			player.cardForPlayer(currentCard);
+			player.cardForPlayer(dealer.dealCard());
 			// add points to Player's hand
-			player.setpTotal(currentCard.getValue());
+			player.getHandValue();
 		}
 	}
 
 	private void dealCardsToDealer(int numOfCards) {
-		Card currentCard;
 		// Dealer gets two cards First faces down, Second faces up
 		for (int i = 0; i < numOfCards; i++) {
-			currentCard = deck.dealCard();
-			dealer.cardForDealer(currentCard);
+			dealer.cardForDealer(dealer.dealCard());
 			// add points to Dealer's hand
-			dealer.setdTotal(currentCard.getValue());
+			dealer.getHandValue();
 		}
 	}
 
 	private void dealFirstCardToDealer() {
-		Card currentCard;
-		currentCard = deck.dealCard();
-		dealer.cardForDealer(currentCard);
-		// add points to Dealer's hand
-		dealer.setdTotal(currentCard.getValue());
+		dealer.cardForDealer(dealer.dealCard());
 	}
 
 	private void printPlayerMenu() {
@@ -158,7 +140,8 @@ public class BlackJackApplication {
 			// Hit
 			dealCardsToPlayer(1);
 			System.out.println(player.toPlayerHandString());
-			System.out.println("PlayeTotal Points: " + player.getpTotal());
+			System.out.println("Player's Total Points: " + player.getpTotal());
+
 			break;
 		case 2:
 			// Stand
@@ -172,7 +155,7 @@ public class BlackJackApplication {
 		case 9:
 			// Quit
 			System.out.println("We thank you for playing our card game today. Have a good one!");
-			System.exit(0);
+			System.exit(0); // to break out completely without returning to launch();
 		default:
 			System.out.println("Somehow, you still got an invalid entry. Please try again.");
 			break;
@@ -195,8 +178,5 @@ public class BlackJackApplication {
 		} while ((pChoice < 1 || pChoice > 3) && pChoice != 9);
 		return pChoice;
 	}
-	
-	
+
 } // end of class
-
-
