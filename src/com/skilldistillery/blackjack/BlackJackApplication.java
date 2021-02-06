@@ -52,7 +52,6 @@ public class BlackJackApplication {
 	private Dealer dealer = new Dealer();
 	private Deck deck = new Deck();
 	private Scanner kb = new Scanner(System.in);
-
 	public static void main(String[] args) {
 
 		BlackJackApplication bja = new BlackJackApplication();
@@ -60,45 +59,58 @@ public class BlackJackApplication {
 	}
 
 	private void launch() {
-		String captureStr = "";
-		int pChoice = 0; // will force to pick a valid entry
+		
 		// Dealer gets cards ready
 		deck = getCardsReady();
+		
 		// Initial Cards to Player and Dealer
 		// Deal and Display Cards (Dealer's first Face Down)
 		dealCardsToPlayer(2);
 		dealFirstCardToDealer();
 		dealCardsToDealer(1);
+		System.out.println("Player Total Points: " + player.getpTotal());
 		System.out.println(player.toPlayerHandString());
+		System.out.println("Dealer Total Points: " + dealer.getdTotal());
 		System.out.println(dealer.toDealerHandString());
-		// prompt Player to select an action
-		do {
-			printPlayerMenu();
-			captureStr = kb.nextLine();
-			try {
-				pChoice = Integer.parseInt(captureStr);
-			} catch (NumberFormatException e) {
-				// TODO Auto-generated catch block
-				System.out.println("Invalid Entry. Please input a valid integer");
-				pChoice = 0;
-			}
-		} while ((pChoice < 1 || pChoice > 3) && pChoice != 9);
-		// do the action
-		handlePlayersChoice(pChoice);
+		
+		// Player's move (!isBust || !isBJ)
+		// if Hit
+			// Hit
+			// Stand
+			// Bust
+			// BJ
+		// if Stand - Dealer's turn
+		// if Display Hands - Loop 
+		// if Quit - Display Goodbye, and exit program
+		
+		// Dealer's move (!isBust || !isBJ)
+		// if Hit
+			// Hit
+			// Stand
+			// Bust
+			// BJ
+			// if Stand - Player's turn 		
+		// TODO TODO TODO TODO
+//		do {
+			// prompt Player to select an action
+			int pChoice = playerChoiceSelection();			
+			// perform the action
+			handlePlayersChoice(pChoice);
+//		} while (!player.getBjh().isBlackjack(player.getpTotal()) || !player.getBjh().isBust(player.getpTotal()));
+		
 	}
 
 	private Deck getCardsReady() {
 		Deck prepDeck;
-		System.out.println("Hello, I will be your Blackjack Dealer today. Good Luck to you!");
+		System.out.println("\tHello, I will be your Blackjack Dealer today. Good Luck to you!\n");
 		// Dealer gets a deck and show un-shuffled deck to Player
-
-		System.out.println("Here's our deck of cards");
+		System.out.println("Here's our deck of cards:");
 		prepDeck = dealer.producesDeck();
 		// TODO fix toString to printout better
-		System.out.println(prepDeck.toString());
+		System.out.println(prepDeck.toString() + "\n");
 		// Dealer shuffles deck in front of Player
 		prepDeck.shuffle();
-		System.out.println(prepDeck.toString()); // for verification that deck was shuffled
+//		System.out.println(prepDeck.toString()); // for verification that deck was shuffled
 		return prepDeck;
 	}
 
@@ -108,7 +120,6 @@ public class BlackJackApplication {
 		for (int i = 0; i < numOfCards; i++) {
 			currentCard = deck.dealCard();
 			player.cardForPlayer(currentCard);
-//			System.out.println(player.getBjh().toString());
 			// add points to Player's hand
 			player.setpTotal(currentCard.getValue());
 		}
@@ -120,7 +131,6 @@ public class BlackJackApplication {
 		for (int i = 0; i < numOfCards; i++) {
 			currentCard = deck.dealCard();
 			dealer.cardForDealer(currentCard);
-//			System.out.println(dealer.getBjh().toDealerHandString());
 			// add points to Dealer's hand
 			dealer.setdTotal(currentCard.getValue());
 		}
@@ -147,8 +157,8 @@ public class BlackJackApplication {
 		case 1:
 			// Hit
 			dealCardsToPlayer(1);
-			// check Player's status
-
+			System.out.println(player.toPlayerHandString());
+			System.out.println("PlayeTotal Points: " + player.getpTotal());
 			break;
 		case 2:
 			// Stand
@@ -156,8 +166,8 @@ public class BlackJackApplication {
 			break;
 		case 3:
 			// Printout both hands
-			System.out.println(player.getBjh().toString());
-//			System.out.println(dealer.getBjh().toDealerHandString());
+			System.out.println(player.toPlayerHandString());
+			System.out.println(dealer.toDealerHandString());
 			break;
 		case 9:
 			// Quit
@@ -168,4 +178,25 @@ public class BlackJackApplication {
 			break;
 		}
 	}
-}
+
+	private int playerChoiceSelection() {
+		String captureStr = "";
+		int pChoice = 0; // will force to pick a valid entry
+		do {
+			printPlayerMenu();
+			captureStr = kb.nextLine();
+			try {
+				pChoice = Integer.parseInt(captureStr);
+			} catch (NumberFormatException e) {
+				// TODO Auto-generated catch block
+				System.out.println("Invalid Entry. Please input a valid integer");
+				pChoice = 0;
+			}
+		} while ((pChoice < 1 || pChoice > 3) && pChoice != 9);
+		return pChoice;
+	}
+	
+	
+} // end of class
+
+
