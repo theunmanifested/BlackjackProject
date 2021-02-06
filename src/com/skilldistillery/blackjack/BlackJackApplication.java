@@ -43,13 +43,15 @@
 
 package com.skilldistillery.blackjack;
 
+import java.util.*;
 import com.skilldistillery.cards.*;
 
 public class BlackJackApplication {
 	// Welcome(instantiate) participants
-	Player player = new Player();
-	Dealer dealer = new Dealer();
-	Deck deck = new Deck();
+	private Player player = new Player();
+	private Dealer dealer = new Dealer();
+	private Deck deck = new Deck();
+	private Scanner kb = new Scanner(System.in);
 
 	public static void main(String[] args) {
 
@@ -58,10 +60,29 @@ public class BlackJackApplication {
 	}
 
 	private void launch() {
+		String captureStr = "";		
+		int pChoice = 0; // will force to pick a valid entry
 		// Dealer gets cards ready
 		deck = getCardsReady();
 		// Deal cards - descriptive
-		dealCardsToPlayer();
+		dealCardsToPlayer(2);
+		dealFirstCardToDealer();
+		dealCardsToDealer(1); 
+		
+		// prompt Player to select an action
+		do {
+			printPlayerMenu();
+			captureStr = kb.nextLine();
+			try {
+				pChoice = Integer.parseInt(captureStr);
+			} catch (NumberFormatException e) {
+				// TODO Auto-generated catch block
+				System.out.println("Invalid Entry. Please input a valid integer");
+				pChoice = 0;
+			}
+		} while ((pChoice < 1 || pChoice > 3) && pChoice != 9);
+		// do the action
+		handlePlayerChoice(pChoice);
 	}
 
 	private Deck getCardsReady() {
@@ -79,12 +100,42 @@ public class BlackJackApplication {
 		return prepDeck;
 	}
 
-	private void dealCardsToPlayer() {
+	private void dealCardsToPlayer(int numOfCards) {
 		// Player gets two cards face up
-		System.out.println(deck.dealCard().toString());
-		player.cardForPlayer(deck.dealCard());
-		System.out.println(player.toString());
-		player.cardForPlayer(deck.dealCard());
-		System.out.println(player.toString());
+		for (int i = 0; i < numOfCards; i++) {
+			player.cardForPlayer(deck.dealCard());
+			System.out.println(player.getBjh().toString());
+		}
+	}
+
+	private void dealCardsToDealer(int numOfCards) {
+		// Dealer gets two cards First faces down, Second faces up
+		for (int i = 0; i < numOfCards; i++) {
+			dealer.cardForDealer(deck.dealCard());
+			System.out.println(dealer.getBjh().toDealerHandString());
+		}
+	}
+	
+	private void dealFirstCardToDealer() {
+		dealer.cardForDealer(deck.dealCard());
+	}
+
+	private void printPlayerMenu() {
+		System.out.println("\nPlease select action: ");
+		System.out.println("1. Hit ");
+		System.out.println("2. Stand ");
+		System.out.println("3. Print both Hands\n");
+		System.out.println("9. Quit\n");
+	}
+	
+	private void handlePlayerChoice(int userInput) {
+		switch (userInput) {
+		case 1:
+			
+			break;
+
+		default:
+			break;
+		}
 	}
 }

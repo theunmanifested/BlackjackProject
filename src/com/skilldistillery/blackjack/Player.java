@@ -3,9 +3,10 @@ package com.skilldistillery.blackjack;
 import com.skilldistillery.cards.*;
 
 public class Player {
-	private BlackjackHand bjh = new BlackjackHand();
+	private BlackjackHand bjh;
 
 	public Player() {
+		bjh = new BlackjackHand();
 	}
 
 	public void cardForPlayer(Card card) {		

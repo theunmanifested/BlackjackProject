@@ -7,7 +7,12 @@ public class Dealer {
 	private Deck deck;
 
 	public Dealer() {
+		bjh = new BlackjackHand();
 	}
+	
+	public void cardForDealer(Card card) {		
+		bjh.addCard(card);		
+	} 
 	
 	public Deck producesDeck() {
 		deck = new Deck();
@@ -17,6 +22,24 @@ public class Dealer {
 	public Deck getDeck() {
 		return deck;
 	}
+
+	public BlackjackHand getBjh() {
+		return bjh;
+	}
+
+	public void setBjh(BlackjackHand bjh) {
+		this.bjh = bjh;
+	}
+
+	public void setDeck(Deck deck) {
+		this.deck = deck;
+	}
+
+	@Override
+	public String toString() {
+		return bjh.toDealerHandString();
+	}
+	
 	
 	
 }
