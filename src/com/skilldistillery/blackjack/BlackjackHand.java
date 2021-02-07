@@ -18,7 +18,7 @@ public class BlackjackHand {
 	}
 
 	public void clear() {
-		// TODO
+		cards = new ArrayList<>();
 	}
 
 	public int getHandValue() {

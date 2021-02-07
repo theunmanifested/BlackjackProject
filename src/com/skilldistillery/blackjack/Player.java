@@ -4,7 +4,6 @@ import com.skilldistillery.cards.*;
 
 public class Player {
 	private BlackjackHand bjh;
-	private int pTotal = 0;
 
 	public Player() {
 		bjh = new BlackjackHand();
@@ -22,15 +21,6 @@ public class Player {
 	public void setBjh(BlackjackHand bjh) {
 		this.bjh = bjh;
 	}
-
-	public int getpTotal() {
-		return pTotal;
-	}
-
-	public void setpTotal(int pTotal) {
-		this.pTotal += pTotal;
-	}
-
 	
 	public String toPlayerHandString() {
 		return "Player's BlackjackHand [cards=" + bjh.cards + "]";
@@ -38,7 +28,7 @@ public class Player {
 	
 	public boolean isBust() {
 		boolean isBust = false;
-		if (pTotal >= 22) {
+		if (bjh.getHandValue() >= 22) {
 			isBust = true;
 		}
 		return isBust;

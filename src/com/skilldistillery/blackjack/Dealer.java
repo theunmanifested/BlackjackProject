@@ -8,16 +8,8 @@ import com.skilldistillery.cards.*;
 public class Dealer {
 	private BlackjackHand bjh;
 	private Deck deck;
-	private int dTotal = 0;
 
-	public int getdTotal() {
-		return dTotal;
-	}
-
-	public void setdTotal(int dTotal) {
-		this.dTotal += dTotal;
-	}
-
+	
 	public Dealer() {
 		bjh = new BlackjackHand();
 	}
@@ -62,7 +54,7 @@ public class Dealer {
 	
 	public boolean isBust() {
 		boolean isBust = false;
-		if (dTotal >= 22) {
+		if (bjh.getHandValue() >= 22) {
 			isBust = true;
 		}
 		return isBust;
@@ -74,6 +66,11 @@ public class Dealer {
 	
 	public int getHandValue() {
 		return bjh.getHandValue();
+	}
+
+	@Override
+	public String toString() {
+		return "Dealer [bjh=" + bjh + "]";
 	}
 	
 	
