@@ -51,7 +51,6 @@ public class BlackJackApplication {
 	private Player player = new Player();
 	private Dealer dealer = new Dealer();
 	private Scanner kb = new Scanner(System.in);
-	private boolean keepGoing = true;
 
 	public static void main(String[] args) {
 
@@ -60,9 +59,7 @@ public class BlackJackApplication {
 	}
 
 	private void launch() {
-		// continue to play until player quits - keepGoing = false
-		do {
-		
+		boolean isStanding = false;
 		// Dealer gets cards ready and displays
 		System.out.println("\tHello, I will be your Blackjack Dealer today. Good Luck to you!\n");
 		// Dealer gets a deck and show un-shuffled deck to Player
@@ -72,7 +69,7 @@ public class BlackJackApplication {
 		// Dealer shuffles deck in front of Player
 		dealer.shuffle();
 //		System.out.println(dealer.getDeck().toString()); // for verification that deck was shuffled
-		
+
 		// Initial Cards to Player and Dealer
 		// Deal and Display Cards (Dealer's first Face Down)
 		dealCardsToPlayer(2);
@@ -82,27 +79,36 @@ public class BlackJackApplication {
 		System.out.println(player.toPlayerHandString());
 		System.out.println("Dealer Total Points: " + dealer.getHandValue());
 		System.out.println(dealer.toDealerHandString());
-		// check if both get Blackjack at first hand dealt
-			if (player.isBlackJack() && dealer.isBlackJack()) {
-				System.out.println("BLACKJACK: Both Dealer and Player have 21. Tie/Push. Start again!");
-				continue;
-			}
-			
-//			do {
-
-		// prompt Player to select an action
-		int pChoice = playerChoiceSelection();
-		// perform the action
-		handlePlayersChoice(pChoice);
-		// if player's hand is higher than 21, they bust
-
-//			} while (!player.isBust() && !player.isBlackjack);
-		} while (keepGoing);
-		// sysout
+		
+		// perform a check if both or one of the participants got a Blackjack (21 on the initial Blackjack hand)
+		checkIfBlackjack();
+		
+		// Player
+		do {
+			// prompt Player to select an action
+			int pChoice = playerChoiceSelection();
+			// perform the action and keep asking for player's input if appropriate
+			isStanding = handlePlayersChoice(pChoice);
+		} while (!isStanding);
 
 	} // end of launch()
 
-//	private boolean playerTakesAction()
+	private void checkIfBlackjack() {
+		// check if both get Blackjack at first hand dealt, if so Anounce the Tie/Push and exit the game
+		if (player.isBlackJack() && dealer.isBlackJack()) {
+			System.out.println("BLACKJACK: BOTH! -- Dealer and Player have 21. Tie/Push!");
+			System.out.println("WINNERS: Player and Dealer\nThank you for playing. GoodBye!");
+			System.exit(0);
+		} else if (player.isBlackJack()) {
+			System.out.println("BLACKJACK: PLAYER!");
+			System.out.println("WINNER: Player!\nThank you for playing. GoodBye!");
+			System.exit(0);
+		} else if (dealer.isBlackJack()) {
+			System.out.println("BLACKJACK: DEALER!");
+			System.out.println("WINNER: Dealer!\nThank you for playing. GoodBye!");
+			System.exit(0);
+		}
+	}
 
 	private void dealCardsToPlayer(int numOfCards) {
 		// Player gets two cards face up
@@ -134,18 +140,23 @@ public class BlackJackApplication {
 		System.out.println("9. Quit\n");
 	}
 
-	private void handlePlayersChoice(int userInput) {
+	private boolean handlePlayersChoice(int userInput) {
+		boolean isStanding = false;
 		switch (userInput) {
 		case 1:
 			// Hit
 			dealCardsToPlayer(1);
 			System.out.println(player.toPlayerHandString());
-			System.out.println("Player's Total Points: " + player.getpTotal());
-
+			System.out.println("Player's Total Points: " + player.getHandValue());
+			if (player.getHandValue() > 21) {
+				System.out.println("Player Busted!\nWINNER: Dealer!");
+				System.exit(0);
+			}
 			break;
 		case 2:
 			// Stand
 			System.out.println("Player Stands\n");
+			isStanding = true;
 			break;
 		case 3:
 			// Printout both hands
@@ -160,6 +171,7 @@ public class BlackJackApplication {
 			System.out.println("Somehow, you still got an invalid entry. Please try again.");
 			break;
 		}
+		return isStanding;
 	}
 
 	private int playerChoiceSelection() {
